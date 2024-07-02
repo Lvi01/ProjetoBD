@@ -52,15 +52,15 @@ app.get("/", function(req, res){
     });
 });
 
-app.post("/add-card", function(req, res) {
+app.post("/cartas/add", function(req, res) {
     var nome = req.body.nome;
     var tipo = req.body.tipo;
     var raridade = req.body.raridade;
     var expansao = req.body.expansao;
     var condicao = req.body.condicao;
-    var precoCompra = req.body.precoCompra;
-    var precoVenda = req.body.precoVenda;
-    var quantidadeEstoque = req.body.quantidadeEstoque;
+    var precoCompra = req.body.preco_compra;
+    var precoVenda = req.body.preco_venda;
+    var quantidadeEstoque = req.body.quantidade;
 
     var insert = `INSERT INTO Cartas (Nome, Tipo, Raridade, Expansao, Condicao, PrecoCompra, PrecoVenda, QuantidadeEstoque) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -72,16 +72,16 @@ app.post("/add-card", function(req, res) {
     });
 });
 
-app.post("/edit-card", function(req, res) {
+app.post("/cartas/edit", function(req, res) {
     var id = req.body.id;
     var nome = req.body.nome;
     var tipo = req.body.tipo;
     var raridade = req.body.raridade;
     var expansao = req.body.expansao;
     var condicao = req.body.condicao;
-    var precoCompra = req.body.precoCompra;
-    var precoVenda = req.body.precoVenda;
-    var quantidadeEstoque = req.body.quantidadeEstoque;
+    var precoCompra = req.body.preco_compra;
+    var precoVenda = req.body.preco_venda;
+    var quantidadeEstoque = req.body.quantidade;
 
     var update = `UPDATE Cartas SET Nome=?, Tipo=?, Raridade=?, Expansao=?, Condicao=?, PrecoCompra=?, PrecoVenda=?, QuantidadeEstoque=? WHERE ID=?`;
 
@@ -92,7 +92,7 @@ app.post("/edit-card", function(req, res) {
     });
 });
 
-app.delete("/delete-card/:id", function(req, res) {
+app.post("/cartas/delete/:id", function(req, res) {
     var id = req.params.id;
 
     var deleteQuery = `DELETE FROM Cartas WHERE ID = ?`;
@@ -100,7 +100,140 @@ app.delete("/delete-card/:id", function(req, res) {
     con.query(deleteQuery, [id], function (err, result) {
         if (err) throw err;
         console.log("1 carta deletada");
-        res.sendStatus(200);
+        res.redirect("/");
+    });
+});
+
+app.post("/clientes/add", function(req, res) {
+    var nome = req.body.nome;
+    var email = req.body.email;
+    var telefone = req.body.telefone;
+    var endereco = req.body.endereco;
+
+    var insert = `INSERT INTO Clientes (Nome, Email, Telefone, Endereco) VALUES (?, ?, ?, ?)`;
+
+    con.query(insert, [nome, email, telefone, endereco], function (err, result) {
+        if (err) throw err;
+        console.log("1 cliente inserido");
+        res.redirect("/");
+    });
+});
+
+app.post("/clientes/edit", function(req, res) {
+    var id = req.body.id;
+    var nome = req.body.nome;
+    var email = req.body.email;
+    var telefone = req.body.telefone;
+    var endereco = req.body.endereco;
+
+    var update = `UPDATE Clientes SET Nome=?, Email=?, Telefone=?, Endereco=? WHERE ID=?`;
+
+    con.query(update, [nome, email, telefone, endereco, id], function (err, result) {
+        if (err) throw err;
+        console.log("1 cliente atualizado");
+        res.redirect("/");
+    });
+});
+
+app.post("/clientes/delete/:id", function(req, res) {
+    var id = req.params.id;
+
+    var deleteQuery = `DELETE FROM Clientes WHERE ID = ?`;
+
+    con.query(deleteQuery, [id], function (err, result) {
+        if (err) throw err;
+        console.log("1 cliente deletado");
+        res.redirect("/");
+    });
+});
+
+app.post("/vendas/add", function(req, res) {
+    var clienteId = req.body.cliente_id;
+    var cartaId = req.body.carta_id;
+    var quantidade = req.body.quantidade;
+    var preco = req.body.preco;
+    var dataVenda = req.body.data_venda;
+
+    var insert = `INSERT INTO Vendas (ClienteID, CartaID, Quantidade, Preco, DataVenda) VALUES (?, ?, ?, ?, ?)`;
+
+    con.query(insert, [clienteId, cartaId, quantidade, preco, dataVenda], function (err, result) {
+        if (err) throw err;
+        console.log("1 venda inserida");
+        res.redirect("/");
+    });
+});
+
+app.post("/vendas/edit", function(req, res) {
+    var id = req.body.id;
+    var clienteId = req.body.cliente_id;
+    var cartaId = req.body.carta_id;
+    var quantidade = req.body.quantidade;
+    var preco = req.body.preco;
+    var dataVenda = req.body.data_venda;
+
+    var update = `UPDATE Vendas SET ClienteID=?, CartaID=?, Quantidade=?, Preco=?, DataVenda=? WHERE ID=?`;
+
+    con.query(update, [clienteId, cartaId, quantidade, preco, dataVenda, id], function (err, result) {
+        if (err) throw err;
+        console.log("1 venda atualizada");
+        res.redirect("/");
+    });
+});
+
+app.post("/vendas/delete/:id", function(req, res) {
+    var id = req.params.id;
+
+    var deleteQuery = `DELETE FROM Vendas WHERE ID = ?`;
+
+    con.query(deleteQuery, [id], function (err, result) {
+        if (err) throw err;
+        console.log("1 venda deletada");
+        res.redirect("/");
+    });
+});
+
+app.post("/compras/add", function(req, res) {
+    var clienteId = req.body.cliente_id;
+    var cartaId = req.body.carta_id;
+    var quantidade = req.body.quantidade;
+    var preco = req.body.preco;
+    var dataCompra = req.body.data_compra;
+
+    var insert = `INSERT INTO Compras (ClienteID, CartaID, Quantidade, Preco, DataCompra) VALUES (?, ?, ?, ?, ?)`;
+
+    con.query(insert, [clienteId, cartaId, quantidade, preco, dataCompra], function (err, result) {
+        if (err) throw err;
+        console.log("1 compra inserida");
+        res.redirect("/");
+    });
+});
+
+app.post("/compras/edit", function(req, res) {
+    var id = req.body.id;
+    var clienteId = req.body.cliente_id;
+    var cartaId = req.body.carta_id;
+    var quantidade = req.body.quantidade;
+    var preco = req.body.preco;
+    var dataCompra = req.body.data_compra;
+
+    var update = `UPDATE Compras SET ClienteID=?, CartaID=?, Quantidade=?, Preco=?, DataCompra=? WHERE ID=?`;
+
+    con.query(update, [clienteId, cartaId, quantidade, preco, dataCompra, id], function (err, result) {
+        if (err) throw err;
+        console.log("1 compra atualizada");
+        res.redirect("/");
+    });
+});
+
+app.post("/compras/delete/:id", function(req, res) {
+    var id = req.params.id;
+
+    var deleteQuery = `DELETE FROM Compras WHERE ID = ?`;
+
+    con.query(deleteQuery, [id], function (err, result) {
+        if (err) throw err;
+        console.log("1 compra deletada");
+        res.redirect("/");
     });
 });
 
