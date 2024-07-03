@@ -35,54 +35,6 @@ CREATE TABLE ItensVenda (
     FOREIGN KEY (CartaID) REFERENCES Cartas(ID)
 );
 
--- Inserção de Cartas
-INSERT INTO Cartas (Nome, Tipo, Raridade, Expansao, Condicao, PrecoCompra, PrecoVenda, QuantidadeEstoque)
-VALUES
-('Charizard', 'Fogo', 'Rara', 'Base Set', 'Novo', 150.00, 200.00, 10),
-('Blastoise', 'Água', 'Rara', 'Base Set', 'Usado', 100.00, 150.00, 5),
-('Pikachu', 'Elétrico', 'Comum', 'Jungle', 'Novo', 5.00, 10.00, 50),
-('Mewtwo', 'Psíquico', 'Ultra Rara', 'Base Set', 'Novo', 200.00, 300.00, 2),
-('Gengar', 'Fantasma', 'Rara', 'Fossil', 'Usado', 50.00, 80.00, 8);
-
--- Inserção de Clientes
-INSERT INTO Clientes (Nome, Endereco, Telefone, Email)
-VALUES
-('João Silva', 'Rua A, 123', '1111-1111', 'joao@example.com'),
-('Maria Oliveira', 'Rua B, 456', '2222-2222', 'maria@example.com'),
-('Carlos Santos', 'Rua C, 789', '3333-3333', 'carlos@example.com'),
-('Ana Costa', 'Rua D, 101', '4444-4444', 'ana@example.com'),
-('Pedro Lima', 'Rua E, 202', '5555-5555', 'pedro@example.com');
-
--- Exemplo de Venda
-INSERT INTO Vendas (ClienteID, DataVenda, TotalVenda)
-VALUES
-(1, '2024-06-01', 410.00);
-
-INSERT INTO ItensVenda (VendaID, CartaID, Quantidade, PrecoUnitario)
-VALUES
-(1, 1, 1, 200.00),
-(1, 2, 1, 150.00),
-(1, 3, 3, 10.00);
-
--- Exemplo de Compra
-INSERT INTO Compras (ClienteID, DataCompra, TotalCompra)
-VALUES
-(2, '2024-06-02', 100.00);
-
-INSERT INTO ItensCompra (CompraID, CartaID, Quantidade, PrecoUnitario)
-VALUES
-(1, 5, 2, 50.00);
-
--- Exemplo de Troca
-INSERT INTO Trocas (ClienteID, DataTroca)
-VALUES
-(3, '2024-06-03');
-
-INSERT INTO ItensTroca (TrocaID, CartaOferecidaID, CartaRecebidaID)
-VALUES
-(1, 4, 1);
-
-
 CREATE TABLE Compras (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     ClienteID INT,
